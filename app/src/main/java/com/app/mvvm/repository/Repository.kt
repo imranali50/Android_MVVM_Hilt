@@ -18,6 +18,7 @@ class Repository @Inject constructor(
 
     suspend fun getDog(): Flow<NetworkResult<DogResponse>> {
         return flow {
+            emit(NetworkResult.Loading())
             emit(safeApiCall { remoteDataSource.getData() })
         }.flowOn(Dispatchers.IO)
     }

@@ -79,4 +79,11 @@ dependencies {
     implementation(libs.logging.interceptor)
     implementation(libs.converter.scalars)
 
+    //photoResize
+    implementation (libs.ucrop)
+
+    //image load
+    implementation (libs.glide)
+
+
 }

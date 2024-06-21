@@ -1,11 +1,16 @@
 package com.app.mvvm.model.response
 
 data class MediaUploadResponse(
-    val `data`: Data,
+    val base_url: String,
+    val `data`: List<Data>,
     val message: String,
     val status: String
 ) {
     data class Data(
-        val imageUrls: List<String>
+        val mediaBaseUrl: String,
+        val mediaName: String,
+        val medialThumUrl: String,
+        val videoThumbImgName: String,
+        val videoThumbImgUrl: String
     )
 }

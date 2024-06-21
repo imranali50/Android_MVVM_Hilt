@@ -28,7 +28,7 @@ object NetworkModule {
             .Builder()
             .readTimeout(15, TimeUnit.SECONDS)
             .connectTimeout(15, TimeUnit.SECONDS)
-            .addInterceptor(provideTokenInterceptor())
+//            .addInterceptor(provideTokenInterceptor())
             .addInterceptor(provideHttpLoggingInterceptor())
             .build()
     }
@@ -51,6 +51,7 @@ object NetworkModule {
         gsonConverterFactory: GsonConverterFactory
     ): Retrofit {
         return Retrofit.Builder()
+//            .baseUrl(Constant.BASE_URL)
             .baseUrl(Constant.BASE_URL)
             .client(okHttpClient)
             .addConverterFactory(gsonConverterFactory)

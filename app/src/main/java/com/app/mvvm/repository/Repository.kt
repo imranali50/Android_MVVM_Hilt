@@ -1,7 +1,10 @@
 package com.app.mvvm.repository
 
+import android.util.Log
 import com.app.mvvm.model.BaseApiResponse
+import com.app.mvvm.model.request.EventRequest
 import com.app.mvvm.model.response.DogResponse
+import com.app.mvvm.model.response.EventResponse
 import com.app.mvvm.model.response.MediaUploadResponse
 import com.app.mvvm.remote.RemoteDataSource
 import com.app.mvvm.util.NetworkResult
@@ -33,6 +36,13 @@ class Repository @Inject constructor(
         }.flowOn(Dispatchers.IO)
     }
 
+    suspend fun eventList(eventRequest: EventRequest): Flow<NetworkResult<EventResponse>> {
+        return flow {
+            emit(NetworkResult.Loading())
+            emit(safeApiCall { remoteDataSource.eventList(eventRequest) })
+        }.flowOn(Dispatchers.IO)
+    }
+
 
     //image
     suspend fun mediaUpload(
@@ -41,6 +51,7 @@ class Repository @Inject constructor(
         return flow {
             emit(NetworkResult.Loading())
             emit(safeApiCall { remoteDataSource.mediaUpload(request, file) })
+            Log.e("TAG", "mediaUpload: "+file )
         }.flowOn(Dispatchers.IO)
     }
 }

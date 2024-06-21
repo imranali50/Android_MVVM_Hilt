@@ -31,7 +31,7 @@ object FileUtil {
 
     fun getPath(mcontext: Context, uri: Uri): String? {
         // check here to KITKAT or new version
-        val isKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT
+        val isKitKat = true
         var selection: String? = null
         var selectionArgs: Array<String>? = null
         // DocumentProvider

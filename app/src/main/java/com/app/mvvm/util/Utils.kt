@@ -19,7 +19,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.app.mvvm.MainActivity
+import com.app.mvvm.ui.MainActivity
 import com.app.mvvm.R
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.util.regex.Pattern

@@ -1,15 +1,12 @@
-package com.app.mvvm
+package com.app.mvvm.ui
 
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.os.Environment
-import android.os.Handler
-import android.os.Looper
 import android.provider.MediaStore
 import android.util.Log
 import android.widget.TextView
@@ -21,6 +18,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.app.mvvm.BuildConfig
+import com.app.mvvm.MyApplication
+import com.app.mvvm.R
 import com.app.mvvm.databinding.ActivityMainBinding
 import com.app.mvvm.databinding.DialogCameraBinding
 import com.app.mvvm.model.viewModel.MainViewModel
@@ -29,6 +29,7 @@ import com.app.mvvm.util.FileUtil
 import com.app.mvvm.util.GALLERY_PERMISSION
 import com.app.mvvm.util.NetworkResult
 import com.app.mvvm.util.PreferenceManager
+import com.app.mvvm.util.UtilJ.getImageType
 import com.app.mvvm.util.Utils
 import com.app.mvvm.util.checkSelfPermissions
 import com.app.mvvm.util.hasPermissions
@@ -75,9 +76,15 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    private fun click () {
+    private fun click() {
         b.imgMain.setOnClickListener {
             dialog.show()
+        }
+        b.country.setOnClickListener {
+            startActivity(Intent(this, CountryActivity::class.java))
+        }
+        b.list.setOnClickListener {
+            startActivity(Intent(this, EventActivity::class.java))
         }
     }
 
@@ -239,11 +246,7 @@ class MainActivity : AppCompatActivity() {
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
                 val tempUri = Uri.fromFile(File(currentPhotoPath))
-                UCrop.of(
-                    tempUri!!, Uri.fromFile(
-                        File(
-                            cacheDir, System.currentTimeMillis().toString() + "Crop_Image"
-                        )
+                UCrop.of(tempUri!!, Uri.fromFile(File(cacheDir, System.currentTimeMillis().toString() + "Crop_Image.jpg")
                     )
                 ).withAspectRatio(9F, 16F).start(this)
             }
@@ -257,7 +260,7 @@ class MainActivity : AppCompatActivity() {
                     UCrop.of(
                         selectedImage!!, Uri.fromFile(
                             File(
-                                cacheDir, System.currentTimeMillis().toString() + "Crop_Image"
+                                cacheDir, System.currentTimeMillis().toString() + "Crop_Image.jpg"
                             )
                         )
                     ).withAspectRatio(9F, 16F).start(this)
@@ -325,8 +328,9 @@ class MainActivity : AppCompatActivity() {
         if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP) {
             val resultUri = UCrop.getOutput(data!!)
             val temp = FileUtil.getPath(this, resultUri!!)
-            Log.e("TAG", "onActivityResult: "+ temp)
-//            viewModel.mediaUpload("profileImage", File(temp.toString()), 2)
+            Log.e("TAG", "onActivityResult: " + temp)
+
+            mainViewModel.mediaUpload("1",getImageType(File(temp)))
 
             Glide.with(this).load(temp).into(b.imgMain)
         } else if (resultCode == UCrop.RESULT_ERROR) {
